@@ -1,0 +1,44 @@
+{
+  "manifest_version": 2,
+
+  "name": "Troxy",
+  "version": "1.1.0",
+  "description": "Simple proxy switcher with no bullshit",
+
+  "icons": {
+    "48": "icons/48_on.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "48": "icons/48_off.png"
+    },
+    "default_title": "Troxy"
+  },
+
+  "options_ui": {
+    "page": "options.html"
+  },
+
+  "background": {
+    "scripts": [
+      "js/background.js",
+      "js/storage.js"
+    ]
+  },
+
+  "permissions": [
+    "storage",
+    "proxy",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{7434f4e1-356e-4483-b195-2cbb03e04036}",
+      "strict_min_version": "115.0"
+    }
+  }
+}

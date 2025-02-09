@@ -1,0 +1,43 @@
+:root {
+  --color-bg: #1c1b22;
+  --color-card: #23222b;
+  --color-text-0: #fbfbfe;
+  --color-text-1: #b7b7bc;
+  --in-content-border-color: rgba(249, 249, 250, 0.2);
+  --in-content-text-color: rgb(251, 251, 254);
+  --font-size-title: 16px;
+  --font-size-description: 14px;
+  --font-weight-bold: 600;
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+}
+
+body {
+  background: var(--color-card);
+}
+
+.title {
+  color: var(--in-content-text-color);
+  font-size: var(--font-size-title);
+  font-weight: normal;
+  line-height: 22px;
+  padding-top: 16px;
+  margin: 0;
+  magin-inline-end: 8px;
+}
+
+textarea, input {
+  margin-top: 6px;
+  padding: 8px;
+  font-size: var(--font-size-description);
+  color: var(--in-content-text-color);
+  background: var(--color-card);
+  border: 1px solid var(--in-content-border-color);
+  border-radius: var(--border-radius-small);
+}
+
+textarea {
+  width: 100%;
+  height: 5em;
+  resize: none;
+}
