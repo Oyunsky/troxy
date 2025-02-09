@@ -6,12 +6,16 @@
   "description": "Simple proxy switcher with no bullshit",
 
   "icons": {
-    "48": "icons/48_on.png"
+    "48": "icons/48_on.png",
+    "96": "icons/96_on.png",
+    "192": "icons/192_on.png"
   },
 
   "browser_action": {
     "default_icon": {
-      "48": "icons/48_off.png"
+      "48": "icons/48_off.png",
+      "96": "icons/96_off.png",
+      "192": "icons/192_off.png"
     },
     "default_title": "Troxy"
   },
