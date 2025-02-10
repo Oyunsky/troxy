@@ -1,5 +1,9 @@
 {
   "devDependencies": {
-    "@types/firefox-webext-browser": "^120.0.4"
+    "@types/firefox-webext-browser": "^120.0.4",
+    "mkdirp": "^3.0.1"
+  },
+  "scripts": {
+    "build": "tsc && mkdirp troxy/js && cp -r src/icons src/manifest.json src/options.html src/options.css troxy/ && cp dist/* troxy/js/"
   }
 }
