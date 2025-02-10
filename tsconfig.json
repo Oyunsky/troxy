@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "build/js",
     "target": "ES2018",
     "lib": ["ES2018", "DOM"],
-    "types": ["firefox-webext-browser"]
+    "types": ["firefox-webext-browser"],
+    "strict": true
   },
   "include": ["src/ts/*.ts"],
-  "exclude": ["node_modules", "troxy"]
+  "exclude": ["node_modules", "build"]
 }
