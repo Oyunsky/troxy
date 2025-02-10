@@ -1,6 +1,6 @@
 # Troxy
 
-<p align="center"><img width="192" alt="Troxy Logo" src="icons/192_on.png"></p>
+<p align="center"><img width="192" alt="Troxy Logo" src="src/icons/192_on.png"></p>
 <div align="center">The proxy switcher with no bullshit.</div>
 <div align="center">Troxy is a Firefox extension that allows you to send web requests through a proxy server.</div>
 <br/>
