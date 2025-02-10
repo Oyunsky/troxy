@@ -41,3 +41,15 @@ textarea {
   height: 5em;
   resize: none;
 }
+
+#ignore-items {
+  height: 100px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.ignore-item {
+  display: flex;
+  justify-content: space-between;
+  color: var(--in-content-text-color);
+}

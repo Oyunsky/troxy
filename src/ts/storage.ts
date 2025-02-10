@@ -18,7 +18,7 @@ async function send_message(message: MessageT) {
     try {
         await browser.runtime.sendMessage(message);
     } catch (error) {
-        console.error("[send_message][error]", error, ":", message);
+        console.error("[send_message] error:", error, ":", message);
     }
 }
 
@@ -27,7 +27,7 @@ async function set_storage_data(storage: StorageAreaT, data: object): Promise<bo
         await storage.set(data);
         return true;
     } catch (error) {
-        console.error("[set_storage_data][error]", error, ":", data);
+        console.error("[set_storage_data] error:", error, ":", data);
         return false;
     }
 }
@@ -37,7 +37,7 @@ async function get_storage_data<T>(storage: StorageAreaT, key: string): Promise<
         const data = await storage.get(key);
         return key in data ? data[key] as T: null;
     } catch (error) {
-        console.error("[get_storage_data][error]", error, ":", key);
+        console.error("[get_storage_data] error:", error, ":", key);
         return null;
     }
 }
@@ -63,8 +63,8 @@ async function set_storage_state(state: StateT): Promise<void> {
     await browser.browserAction.setIcon(icon_settings);
 }
 
-async function get_storage_ignore_list(): Promise<IgnoreListT | null> {
-    return await get_storage_data<IgnoreListT>(STORAGE_LOCAL, "ignore_list");
+async function get_storage_ignore_list(): Promise<IgnoreListT> {
+    return await get_storage_data<IgnoreListT>(STORAGE_LOCAL, "ignore_list") || [];
 }
 
 async function set_storage_ignore_list(data: string | IgnoreListT): Promise<void> {
@@ -72,4 +72,28 @@ async function set_storage_ignore_list(data: string | IgnoreListT): Promise<void
             ? data.split(",").map(item => item.trim()).filter(Boolean)
             : data.map(item => item.trim()).filter(Boolean);
     await set_storage_data(STORAGE_LOCAL, {ignore_list});
+}
+
+async function push_storage_ignore_list(data: string): Promise<void> {
+    const t_data = data.trim();
+    if (!t_data) return;
+    try {
+        const ignore_list = new Set(await get_storage_ignore_list());
+        ignore_list.add(t_data);
+        await set_storage_ignore_list(Array.from(ignore_list));
+    } catch (error) {
+        console.error("[push_storage_ignore_list] error:", error);
+    }
+}
+
+async function remove_storage_ignore_list(key: string): Promise<void> {
+    const t_key = key.trim();
+    if (!t_key) return;
+    try {
+        const ignore_list = await get_storage_ignore_list();
+        const updated_list = ignore_list.filter(item => item !== t_key);
+        await set_storage_ignore_list(updated_list);
+    } catch (error) {
+        console.error("[remove_storage_ignore_list] error:", error);
+    }
 }
