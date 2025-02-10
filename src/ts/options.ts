@@ -37,10 +37,10 @@ function main() {
         return target.value.trim();
     };
 
-    proxy_input.addEventListener("change", (event) => {
+    proxy_input?.addEventListener("change", (event) => {
         send_message({proxy_string: get_event_value(event)});
     });
-    proxy_ignore_list.addEventListener("change", (event) => {
+    proxy_ignore_list?.addEventListener("change", (event) => {
         set_storage_ignore_list(get_event_value(event));
     });
 }

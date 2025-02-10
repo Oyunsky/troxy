@@ -12,6 +12,8 @@ function parse_proxy(input: string): ProxyT | null {
         const m1_r = re_ip_port.exec(left);
         const m2_r = re_user_pass.exec(right);
         if (m1_r?.groups && m2_r?.groups) return {...m1_r?.groups, ...m2_r?.groups};
+
+        return null;
     };
    
     if (input.includes("@")) {
@@ -39,7 +41,7 @@ browser.browserAction.onClicked.addListener(on_extension_icon_clicked);
 async function on_message_recieved(message: EventMessageT, _sender: SenderT): Promise<void> {
     if ("proxy_string" in message) {
         const proxy = parse_proxy(message.proxy_string);
-        await set_storage_proxy(proxy);
+        if (proxy) await set_storage_proxy(proxy);
     }
 }
 
