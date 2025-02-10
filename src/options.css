@@ -3,8 +3,7 @@
   --color-card: #23222b;
   --color-card-hover: #2c2a36;
   --color-text: rgb(251, 251, 254);
-  --color-border: rgba(249, 249, 250, 0.2);
-  --color-border-hex: #4e4d54;
+  --color-border: #4e4d54;
   --color-accent: #00ddff;
   --font-size-title: 16px;
   --font-size-description: 14px;
@@ -13,7 +12,7 @@
   --border-radius-medium: 8px;
 }
 
-input, .ignore-item {
+input, .ignore-item, #empty-item {
   color: var(--color-text);
   font-family: monospace;
   font-size: var(--font-size-description);
@@ -71,9 +70,15 @@ input {
 }
 
 .delete>svg {
-  color: var(--color-border-hex);
+  color: var(--color-border);
 }
 
 .delete>svg:hover {
   color: var(--color-accent);
+}
+
+#empty-item {
+  color: var(--color-border);
+  text-align: center;
+  background-color: var(--color-card-hover);
 }

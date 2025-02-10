@@ -1,5 +1,6 @@
 function parse_proxy(input: string): ProxyT | null {
-    if (!input.length) return null;
+    const t_input = input.trim()
+    if (!t_input.length) return null;
 
     const re_user_pass = /^(?<username>[\w\d]+)\:(?<password>[\w\d]+)$/;
     const re_ip_port = /^(?<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\:(?<port>\d{1,5})$/;
@@ -16,11 +17,11 @@ function parse_proxy(input: string): ProxyT | null {
         return null;
     };
    
-    if (input.includes("@")) {
-        const [left, right] = input.split("@");
+    if (t_input.includes("@")) {
+        const [left, right] = t_input.split("@");
         return parse_parts(left, right);
-    } else if (input.split(":").length === 4) {
-        const parts = input.split(":");
+    } else if (t_input.split(":").length === 4) {
+        const parts = t_input.split(":");
         const left = parts.slice(0, 2).join(":");
         const right = parts.slice(2).join(":");
         return parse_parts(left, right);

@@ -64,7 +64,7 @@ async function set_storage_state(state: StateT): Promise<void> {
 }
 
 async function get_storage_ignore_list(): Promise<IgnoreListT> {
-    return await get_storage_data<IgnoreListT>(STORAGE_LOCAL, "ignore_list") || [];
+    return await get_storage_data<IgnoreListT>(STORAGE_LOCAL, "ignore_list") || DEFAULT_IGNORE_LIST;
 }
 
 async function set_storage_ignore_list(data: string | IgnoreListT): Promise<void> {

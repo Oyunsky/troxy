@@ -44,6 +44,8 @@ async function remove_ignore_item(event: Event): Promise<void> {
 
     await remove_storage_ignore_list(value_item);
     ignore_item.remove();
+
+    refresh_ignore_items();
 }
 
 async function add_ignore_item(text: string): Promise<void> {
@@ -91,13 +93,24 @@ async function update_ignore_items(): Promise<void> {
 
 input_ignore_host?.addEventListener("input", update_ignore_items);
 
+function create_empty_item(): HTMLElement {
+    const div = document.createElement("div");
+    div.id = "empty-item";
+    div.textContent = "host list is empty. example: localhost";
+    return div;
+}
+
 async function refresh_ignore_items(): Promise<void> {
     if (!div_ignore_items) return;
 
     const ignore_list = await get_storage_ignore_list();
-    const sorted_list = ignore_list.sort();
-    div_ignore_items.innerHTML = "";
-    sorted_list.forEach(add_ignore_item);
+    if (!ignore_list.length) {
+        div_ignore_items.appendChild(create_empty_item());
+    } else {
+        const sorted_list = ignore_list.sort();
+        div_ignore_items.innerHTML = "";
+        sorted_list.forEach(add_ignore_item);
+    }
 }
 
 async function handle_enter(event: KeyboardEvent): Promise<void> {
@@ -125,10 +138,10 @@ async function refresh_input_proxy(): Promise<void> {
 
 function handle_proxy_input(event: Event): void {
     const target = event.target as HTMLInputElement;
-    send_message({proxy_string: target.value.trim()});
+    send_message({proxy_string: target.value});
 }
 
-input_ignore_host?.addEventListener("change", handle_proxy_input);
+input_proxy?.addEventListener("change", handle_proxy_input);
 
 function main() {
     refresh_input_proxy();
