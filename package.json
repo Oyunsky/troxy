@@ -4,6 +4,6 @@
     "mkdirp": "^3.0.1"
   },
   "scripts": {
-    "build": "tsc && mkdirp build/js && cp -r src/icons src/manifest.json src/options.html src/options.css build/"
+    "build": "tsc && mkdirp build/js && cp -r src/icons src/manifest.json src/options.html src/options.css build/ && mkdirp build/images && cp src/images/* build/images/"
   }
 }

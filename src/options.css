@@ -1,10 +1,11 @@
 :root {
   --color-bg: #1c1b22;
   --color-card: #23222b;
-  --color-text-0: #fbfbfe;
-  --color-text-1: #b7b7bc;
-  --in-content-border-color: rgba(249, 249, 250, 0.2);
-  --in-content-text-color: rgb(251, 251, 254);
+  --color-card-hover: #2c2a36;
+  --color-text: rgb(251, 251, 254);
+  --color-border: rgba(249, 249, 250, 0.2);
+  --color-border-hex: #4e4d54;
+  --color-accent: #00ddff;
   --font-size-title: 16px;
   --font-size-description: 14px;
   --font-weight-bold: 600;
@@ -12,44 +13,67 @@
   --border-radius-medium: 8px;
 }
 
+input, .ignore-item {
+  color: var(--color-text);
+  font-family: monospace;
+  font-size: var(--font-size-description);
+}
+
 body {
   background: var(--color-card);
 }
 
-.title {
-  color: var(--in-content-text-color);
-  font-size: var(--font-size-title);
-  font-weight: normal;
-  line-height: 22px;
-  padding-top: 16px;
-  margin: 0;
-  magin-inline-end: 8px;
-}
-
-textarea, input {
+input {
   margin-top: 6px;
   padding: 8px;
-  font-size: var(--font-size-description);
-  color: var(--in-content-text-color);
   background: var(--color-card);
-  border: 1px solid var(--in-content-border-color);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-small);
 }
 
-textarea {
-  width: 100%;
-  height: 5em;
-  resize: none;
+.title {
+  color: var(--color-text);
+  font-size: var(--font-size-title);
+  margin: 0;
+  padding-top: 16px;
+  magin-inline-end: 8px;
 }
 
 #ignore-items {
-  height: 100px;
+  height: 150px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  padding: 8px;
   overflow-y: auto;
   box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-small);
 }
 
 .ignore-item {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  color: var(--in-content-text-color);
+}
+
+.ignore-item:hover {
+  background-color: var(--color-card-hover);
+}
+
+.delete {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.delete>svg {
+  color: var(--color-border-hex);
+}
+
+.delete>svg:hover {
+  color: var(--color-accent);
 }
