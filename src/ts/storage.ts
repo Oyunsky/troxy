@@ -1,16 +1,22 @@
 type StorageAreaT = browser.storage.StorageArea;
+type TabT = browser.tabs.Tab;
+type EventMessageT = Record<string, any>;
+type SenderT = browser.runtime.MessageSender;
+type RequestDetailsT = browser.proxy._OnRequestDetails;
+
 type MessageT = Record<string, unknown>;
-type ProxyT = {username: string, password: string, ip: string, port: number};
+type ProxyT = {username?: string, password?: string, ip?: string, port?: number};
 type StateT = boolean;
 type IgnoreListT = Array<string>;
 
 const STORAGE_LOCAL: StorageAreaT = browser.storage.local;
 const STORAGE_SESSION: StorageAreaT = browser.storage.session;
-const DEFAULT_IGNORE_LIST: readonly string[] = ["127.0.0.1", "192.168.0.1", "localhost"];
+const DEFAULT_IGNORE_LIST: IgnoreListT = ["127.0.0.1", "192.168.0.1", "localhost"];
 
 async function send_message(message: MessageT) {
     try {
         await browser.runtime.sendMessage(message);
+        console.debug("Sended message", message);
     } catch (error) {
         console.error("Error sending message", message, ":", error);
     }
@@ -38,24 +44,29 @@ async function get_storage_data<T extends unknown>(
     }
 }
 
-function get_storage_proxy(): Promise<ProxyT | null> {
-    return get_storage_data(STORAGE_LOCAL, "proxy");
+async function get_storage_proxy(): Promise<ProxyT | null> {
+    return await get_storage_data(STORAGE_LOCAL, "proxy");
 }
 
 function set_storage_proxy(proxy: ProxyT) {
     set_storage_data(STORAGE_LOCAL, {proxy});
 }
 
-function get_storage_state(): Promise<StateT | null> {
-    return get_storage_data(STORAGE_SESSION, "state");
+async function get_storage_state(): Promise<StateT | null> {
+    return await get_storage_data(STORAGE_SESSION, "state");
 }
 
 function set_storage_state(state: StateT) {
-    set_storage_data(STORAGE_LOCAL, {state});
+    set_storage_data(STORAGE_SESSION, {state});
+
+    const icon_settings = {
+        path: state ? "icons/48_on.png" : "icons/48_off.png"
+    };
+    browser.browserAction.setIcon(icon_settings);
 }
 
-function get_storage_ignore_list(): Promise<IgnoreListT | null> {
-    return get_storage_data(STORAGE_LOCAL, "ignore_list");
+async function get_storage_ignore_list(): Promise<IgnoreListT | null> {
+    return await get_storage_data(STORAGE_LOCAL, "ignore_list");
 }
 
 function set_storage_ignore_list(data: string | IgnoreListT) {
