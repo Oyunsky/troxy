@@ -63,10 +63,14 @@ hr {
   justify-content: space-between;
 }
 
+details {
+  color: var(--color-description);
+}
+
 .description {
   display: flex;
   flex-direction: column;
-  margin: 8px 0;
+  margin-bottom: 8px;
 }
 
 input, #ignore-host-container {
@@ -79,11 +83,17 @@ input, #ignore-host-container {
   background-color: transparent;
 }
 
+input:focus {
+  outline: none !important;
+  border:1px solid var(--color-text);
+}
+
 #ignore-host-container {
   display: flex;
   flex-direction: column;
   height: 150px;
   overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .ignore-host-item {
@@ -103,3 +113,15 @@ input, #ignore-host-container {
   cursor: pointer;
 }
 
+.description br {
+  margin: 4px 0;
+}
+
+.description span {
+  text-align: justify;
+}
+
+#empty-ignore-host-message {
+  margin: auto;
+  color: var(--color-border);
+}

@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Troxy",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "Simple proxy switcher with no bullshit",
 
   "icons": {

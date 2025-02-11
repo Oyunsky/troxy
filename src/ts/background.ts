@@ -1,3 +1,5 @@
+const DIRECT_CONNECTION = {type: "direct"};
+
 function parse_proxy(input: string): ProxyT | null {
     const t_input = input.trim()
     if (!t_input.length) return null;
@@ -29,60 +31,71 @@ function parse_proxy(input: string): ProxyT | null {
     return null;
 }
 
-async function on_extension_icon_clicked(_tab: TabT): Promise<void> {
-    const proxy = await get_storage_proxy();
-    if (!proxy) return;
-
-    const state = await get_storage_state();
-    await set_storage_state(!state);
-}
-
-browser.browserAction.onClicked.addListener(on_extension_icon_clicked);
-
-async function on_message_recieved(message: EventMessageT, _sender: SenderT): Promise<void> {
-    if ("proxy_string" in message) {
-        const proxy = parse_proxy(message.proxy_string);
-        if (proxy) await set_storage_proxy(proxy);
-    }
-}
-
-browser.runtime.onMessage.addListener(on_message_recieved);
-
 async function is_ignored_host(url: URL): Promise<boolean> {
     const hostname = url.hostname;
     const hostname_port = `${hostname}:${url.port}`;
     try {
-        const data = await get_storage_ignore_list();
+        const data = await storage_get_ignore_hosts();
         const ignore_list = new Set<string>(Array.isArray(data) ? data : []);
-
         return ignore_list.has(hostname) || ignore_list.has(hostname_port);
     } catch (error) {
-        console.error("[is_ignore_host] Error:", error);
+        console.error("[is_ignore_host] error:", error);
         return false;
     }
 }
 
 async function on_request_recieved(request: RequestDetailsT) {
-    const url = new URL(request.url);
-    if (await is_ignored_host(url)) return {type: "direct"};
+    try {
+        const url = new URL(request.url);
+        if (await is_ignored_host(url)) return DIRECT_CONNECTION;
 
-    const state = await get_storage_state();
-    if (!state) return {type: "direct"};
+        const state = await storage_get_state();
+        if (!state) return DIRECT_CONNECTION;
 
-    const {ip, port} = await get_storage_proxy() || {};
-    return ip && port ? {type: "http", host: ip, port} : {type: "direct"};
+        const {ip, port} = await storage_get_proxy() || {};
+        return ip && port ? {type: "http", host: ip, port} : DIRECT_CONNECTION;
+    } catch (error) {
+        console.error("[on_request_recieved] error:", error);
+    }
 }
 
 browser.proxy.onRequest.addListener(on_request_recieved, {urls: ["<all_urls>"]});
 
 async function on_auth_required(): Promise<BlockingResponseT | object> {
     try {
-        const {username, password} = await get_storage_proxy() || {};
+        const {username, password} = await storage_get_proxy() || {};
         if (username && password) return {authCredentials: {username, password}};
     } catch (error) {
-        console.error("[on_auth_required] Error:", error);
+        console.error("[on_auth_required] error:", error);
     }
     return {};
 }
 
 browser.webRequest.onAuthRequired.addListener(on_auth_required, {urls: ["<all_urls>"]}, ["blocking"]);
+
+async function on_message_recieved(message: EventMessageT, _sender: SenderT): Promise<void> {
+    try {
+        if ("proxy_string" in message) {
+            const proxy = parse_proxy(message.proxy_string);
+            if (proxy) await storage_set_proxy(proxy);
+        }
+    } catch (error) {
+        console.error("[on_message_recieved] error:", error);
+    }
+}
+
+browser.runtime.onMessage.addListener(on_message_recieved);
+
+async function on_addon_clicked(_tab: TabT): Promise<void> {
+    try {
+        const proxy = await storage_get_proxy();
+        if (!proxy) return;
+
+        const state = await storage_get_state();
+        await storage_set_state(!state);
+    } catch (error) {
+        console.error("[on_addon_clicked] error:", error);
+    }
+}
+
+browser.browserAction.onClicked.addListener(on_addon_clicked);
