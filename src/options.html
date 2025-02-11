@@ -5,11 +5,47 @@
   <link rel="stylesheet" href="/options.css">
 </head>
 <body>
-  <span class="title">Proxy</span>
-  <input id="input-proxy" type="text" placeholder="username:password@ip:port">
-  <span class="title">Host ignore list</span>
-  <input id="input-ignore-host" type="text" placeholder="127.0.0.1, 192.168.0.1, localhost">
-  <div id="ignore-items"></div>
+  <div class="section">
+    <div class="section-header">
+      <span class="title">proxy:</span>
+      <span>username:password@192.168.0.1:8000</span>
+    </div>
+    <div class="description">
+      <span>support proxy formats:</span>
+      <span>- user:pass@ip:port | user:pass:ip:port</span>
+      <span>- ip:port@user:pass | ip:port:user:pass</span>
+    </div>
+    <input id="input-proxy" type="text">
+  </div>
+  <hr>
+  <div class="section">
+    <div class="section-header">
+      <span class="title">ignore list:</span>
+      <span>127.0.0.1, 192.168.0.1, localhost</span>
+    </div>
+    <div class="description">
+      <span>list of hosts to bypass proxy (direct connection)</span>
+      <span>todo: support wildcards (*.example.com, 192.168.*.*)</span>
+    </div>
+    <input id="input-ignore-host" type="text">
+    <div id="ignore-host-container">
+      <div class="ignore-host-item">
+        <span>127.0.0.1</span>
+        <span class="remove">&times;</span>
+      </div>
+      <div class="ignore-host-item">
+        <span>localhost</span>
+        <span class="remove">&times;</span>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="section">
+    <div class="section-header">
+      <span class="title">options:</span>
+    </div>
+    <div class="description">reserved for future settings and enhancements</div>
+  </div>
   <script src="/js/options.js"></script>
   <script src="/js/storage.js"></script>
 </body>

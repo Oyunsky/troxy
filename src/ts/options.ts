@@ -1,42 +1,13 @@
 const input_proxy = document.getElementById("input-proxy") as HTMLInputElement;
 const input_ignore_host = document.getElementById("input-ignore-host") as HTMLInputElement;
-const div_ignore_items = document.getElementById("ignore-items");
-
-function create_delete_icon(): SVGSVGElement {
-    const svgNS = "http://www.w3.org/2000/svg";
-
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("width", "14");
-    svg.setAttribute("height", "14");
-    svg.setAttribute("viewBox", "0 0 14 14");
-    svg.setAttribute("stroke", "currentColor");
-    svg.setAttribute("stroke-width", "1.1");
-    svg.setAttribute("stroke-linecap", "round");
-    svg.setAttribute("stroke-linejoin", "round");
-
-    const line1 = document.createElementNS(svgNS, "line");
-    line1.setAttribute("x1", "12");
-    line1.setAttribute("y1", "2");
-    line1.setAttribute("x2", "2");
-    line1.setAttribute("y2", "12");
-
-    const line2 = document.createElementNS(svgNS, "line");
-    line2.setAttribute("x1", "2");
-    line2.setAttribute("y1", "2");
-    line2.setAttribute("x2", "12");
-    line2.setAttribute("y2", "12");
-
-    svg.appendChild(line1);
-    svg.appendChild(line2);
-
-    return svg;
-}
+const ignore_host_container = document.getElementById("ignore-host-container");
+const ignore_host_item_name = "ignore-host-item";
 
 async function remove_ignore_item(event: Event): Promise<void> {
     const target = (event.target as HTMLElement).parentElement;
-    if (!target?.classList.contains("delete")) return;
+    if (!target?.classList.contains("remove")) return;
 
-    const ignore_item = target.closest(".ignore-item");
+    const ignore_item = target.closest(`.${ignore_host_item_name}`);
     if (!ignore_item) return;
 
     const value_item = ignore_item.firstChild?.textContent;
@@ -49,27 +20,28 @@ async function remove_ignore_item(event: Event): Promise<void> {
 }
 
 async function add_ignore_item(text: string): Promise<void> {
-    if (!div_ignore_items) return;
+    if (!ignore_host_container) return;
     
     const ignore_item = document.createElement("div");
-    ignore_item.className = "ignore-item";
+    ignore_item.className = ignore_host_item_name;
 
     const span = document.createElement("span");
     span.textContent = text.trim();
 
-    const button_delete = document.createElement("button");
-    button_delete.className = "delete";
-    button_delete.addEventListener("click", remove_ignore_item);
+    const remove_button = document.createElement("button");
+    remove_button.className = "remove";
+    remove_button.addEventListener("click", remove_ignore_item);
 
-    const svg_delete = create_delete_icon();
+    const remove_icon = document.createElement("span");
+    remove_icon.innerHTML = "&times;";
 
-    button_delete.appendChild(svg_delete);
-    ignore_item.append(span, button_delete);
-    div_ignore_items?.appendChild(ignore_item);
+    remove_button.appendChild(remove_icon);
+    ignore_item.append(span, remove_button);
+    ignore_host_container?.appendChild(ignore_item);
 }
 
 function get_ignore_items(): string[] {
-    return Array.from(div_ignore_items?.children || [])
+    return Array.from(ignore_host_container?.children || [])
         .map((item) => item.textContent?.trim() || "");
 }
 
@@ -78,7 +50,7 @@ function get_current_ignore_input(): string {
 }
 
 async function update_ignore_items(): Promise<void> {
-    if (!div_ignore_items) return;
+    if (!ignore_host_container) return;
 
     const search_value = get_current_ignore_input();
     const ignore_list = await get_storage_ignore_list();
@@ -87,7 +59,7 @@ async function update_ignore_items(): Promise<void> {
         .filter((item) => item.toLowerCase().includes(search_value))
         .sort();
 
-    div_ignore_items.innerHTML = "";
+    ignore_host_container.innerHTML = "";
     filtered_items.forEach(add_ignore_item);
 }
 
@@ -101,14 +73,14 @@ function create_empty_item(): HTMLElement {
 }
 
 async function refresh_ignore_items(): Promise<void> {
-    if (!div_ignore_items) return;
+    if (!ignore_host_container) return;
 
     const ignore_list = await get_storage_ignore_list();
     if (!ignore_list.length) {
-        div_ignore_items.appendChild(create_empty_item());
+        ignore_host_container.appendChild(create_empty_item());
     } else {
         const sorted_list = ignore_list.sort();
-        div_ignore_items.innerHTML = "";
+        ignore_host_container.innerHTML = "";
         sorted_list.forEach(add_ignore_item);
     }
 }

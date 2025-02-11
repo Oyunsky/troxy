@@ -1,3 +1,5 @@
+// TODO: После удаление хоста очистка поля `proxy-input`
+
 type StorageAreaT = browser.storage.StorageArea;
 type TabT = browser.tabs.Tab;
 type EventMessageT = Record<string, any>;
