@@ -8,10 +8,11 @@
 
 ## Installation
 
-Firefox: https://todo.com/
+Firefox: https://addons.mozilla.org/addon/troxy/
 
 ## Usage
 
-After installing the add-on, you need to set it up. Open `Settings` > `Options` and enter the proxy address.  
-You can also exclude specific hosts by entering them in the `textarea`.  
-Once set up, simply click on the add-on icon in the top-right corner of the browser.  
+1. Right-click on the extension and select `Manage Extension`, or open `Manage extensions` in browser settings.
+2. Navigate to `Options` tab.
+3. Enter the proxy server address.
+4. Press on the extension icon to enable it.
